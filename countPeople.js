@@ -1,10 +1,11 @@
 /* countPeople.js is a support script for validating and logging the current 
 match pairing data */
 
-const people = require("./AtheneWeeklyData/2017-12-3.json");
-const und = require("underscore");
+const people = require("./MonthlyDataFolder/latestFilename.json");
+const onABreak = require("./on_a_break.json");
+const _ = require("underscore");
 
-const grouped = und.groupBy(people.data, "starting_year");
+const grouped = _.groupBy(people.data, "starting_year");
 
 console.log(
   `Amount of people in Athene lottery: ${people.data.length}
@@ -16,14 +17,22 @@ for (var i = 0; i < keys.length; i++) {
   console.log(`${keys[i]} – ${grouped[keys[i]].length}`);
 }
 
-const allNames = und.map(people.data, function(person) {
+const allNames = _.map(people.data, function (person) {
   return person.name;
 });
-const allIDs = und.map(people.data, function(person) {
+const allIDs = _.map(people.data, function (person) {
   return person.id;
 });
 
-const uniqueIDs = und.uniq(allIDs);
-const uniqueNames = und.uniq(allNames);
+const inactiveIDs = _.map(onABreak.on_a_break, function (person) {
+  return person.id
+})
+
+const uniqueIDs = _.uniq(allIDs);
+const uniqueNames = _.uniq(allNames);
+const maxActiveId = _.max(uniqueIDs);
+const maxInactiveId = _.max(inactiveIDs);
 console.log(`Names are unique: ${allNames.length === uniqueNames.length}`);
 console.log(`IDs are unique: ${allIDs.length === uniqueIDs.length}`);
+console.log(`Highest active ID: ${maxActiveId}`);
+console.log(`Highest inactive ID: ${maxInactiveId}`);

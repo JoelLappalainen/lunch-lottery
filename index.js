@@ -1,8 +1,15 @@
 "use strict";
-import members from "./AtheneWeeklyData/latestMatchInfo.json";
+import members from "./MonthlyDataFolder/filename.json";
 import nodemailer from "nodemailer";
 import config from "./meetUp.config";
 import fs from "fs";
+
+const path = require("path");
+const _ = require("underscore");
+
+// target pair amount depends on how many people have enrolled to the lottery
+// use helper function countPeople.js before sending mails
+const target = 46;
 
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport({
@@ -55,8 +62,6 @@ const selectPairs = arr => {
   }
 };
 
-// target pair amount depends on how many people have enrolled to the lottery
-const target = 54;
 let tmp;
 let loopCount = 0;
 
@@ -83,7 +88,7 @@ const json = JSON.stringify({
 
 const date = new Date();
 const localeDate = date.toLocaleDateString();
-fs.writeFile(`./AtheneWeeklyData/${localeDate}.json`, json, "utf8", () =>
+fs.writeFile(`./MonthlyDataFolder/${localeDate}.json`, json, "utf8", () =>
   console.log("Members written!")
 );
 
@@ -115,9 +120,11 @@ setTimeout(() => {
       count += 1;
       setTimeout(() => {
         const message = `Hellou <b>${pair[0].name}</b> and <b>${pair[1].name}!</b>🔥🔥🔥<br><br>
-        Congrats! You’re each other's Athene match of ${currentMonth}!
+        Time for the last lottery before autumn! 😎
         <br><br>
-        Now you guys need to agree on what you want to do and when. You can go on a lunch date, chat over a cup of coffee, have afterwork beers or try out a new thing together (like go ski jumping or to a trombone concert!).
+        You’re each other's Athene match of ${currentMonth}! By the way, summer time is perfect for meeting the previous matches you have skipped due to any reason 😘
+        <br><br>
+        Now you guys need to agree on what you want to do and when. You can go on a lunch date, chat over a cup of coffee or have afterwork beers – do whatever you like :)
         <br><br>
         Don’t be shy! You can contact each other via email or phone (if provided):
         <br><br>
@@ -125,18 +132,18 @@ setTimeout(() => {
         <br>
         <b>${pair[1].name}</b> – phone: ${pair[1].phone}, starting year: ${pair[1].starting_year}
         <br><br>
-        Happy new year! 💚 
+        Have fun! 💚 
         <br><br>
         Best,
         <br>
         The Lottery Fairies 
         <br><br>
-        PS. If you feel like taking a break from all the matching and lunching, contact Joel (joel.lappalainen@gmail.com, Telegram: @jobbu).
+        PS. If you feel like taking a break from all the matching and lunching, contact me (<your contact information>).
         `;
 
         // setup email data with unicode symbols
         let mailOptions = {
-          from: `${config.addressFrom} <joel.lappalainen@gmail.com>`, // sender address
+          from: `${config.addressFrom} <your.email@gmail.com>`, // sender address
           to: `${pair[0].email}, ${pair[1].email}`, // receiver
           subject: `Surprise! ${pair[0].name} and ${pair[1].name}, you're Athene Lottery match of ${currentMonth}! 🎉`, // Subject line
           text: message, // plain text body
