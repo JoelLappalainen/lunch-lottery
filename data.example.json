@@ -1,0 +1,19 @@
+{
+  "data": [{
+    "id": 1,
+    "starting_year": "Alumni",
+    "name": "Olli Alumni",
+    "email": "<email>",
+    "phone": "<phone>",
+    "paired": false,
+    "previous_lunches": [1]
+  }, {
+    "id": 2,
+    "starting_year": "2015",
+    "name": "Suvi Athenelainen",
+    "email": "<email>",
+    "phone": "<phone>",
+    "paired": false,
+    "previous_lunches": [2]
+  }]
+}
